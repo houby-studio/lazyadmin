@@ -1,0 +1,15 @@
+{
+  "name": "Hello debug world",
+  "type": "pwa-msedge",
+  "port": 9222, // The port value is optional, and the default value is 9222.
+  "request": "launch",
+  "runtimeExecutable": "C:/path/to/your/webview2/app.exe",
+  "env": {
+    // Customize for your app location if needed
+    "Path": "%path%;e:/path/to/your/app/location; "
+  },
+  "useWebView": true,
+  // The following two lines setup source path mapping, where `url` is the start page of your app, and `webRoot` is the top level directory with all your code files.
+  "url": "file:///${workspaceFolder}/path/to/your/toplevel/foo.html",
+  "webRoot": "${workspaceFolder}/path/to/your/assets"
+}
