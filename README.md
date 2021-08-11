@@ -52,11 +52,18 @@ TODO:
   * Windows 10 SDK (10.0.19041.0)
   * C++ (v142) Universal Windows Platform tools
 * Enable NuGet Package source
-* Install the Windows App SDK extension for Visual Studio
+* Install the Windows App SDK extension for Visual Studio (Project Reunion)
 
 #### Visual Studio Code
 
 * Project has to have [launch.json](launch.json), which is already present in this project.
+
+#### Create Visual Studio project
+
+* Start Visual Studio
+* Create new project
+* Blank App, Packaged (WinUI in Desktop)
+* lazyadmin
 
 #### Notes
 
