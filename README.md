@@ -27,25 +27,15 @@ TODO:
 
 ## Development
 
-### Links
-
-* [Docs](https://docs.microsoft.com/en-us/microsoft-edge/webview2/#get-started)
-* [Github Examples](https://github.com/MicrosoftEdge/WebView2Samples#net-wpf-and-windows-forms)
-* [NuGet package](https://www.nuget.org/packages/Microsoft.Web.WebView2)
-* [Understand WebView2 SDK versions](https://docs.microsoft.com/en-us/microsoft-edge/webview2/concepts/versioning)
-* [Switch to a preview channel to test upcoming APIs and features](https://docs.microsoft.com/en-us/microsoft-edge/webview2/how-to/set-preview-channel)
-* [Distribute a WebView2 app and the WebView2 Runtime](https://docs.microsoft.com/en-us/microsoft-edge/webview2/concepts/distribution)
-* [Best practices for developing secure WebView2 applications](https://docs.microsoft.com/en-us/microsoft-edge/webview2/concepts/security)
-* [Manage the user data folder](https://docs.microsoft.com/en-us/microsoft-edge/webview2/concepts/user-data-folder)
-* [Get started debugging WebView2 apps](https://docs.microsoft.com/en-us/microsoft-edge/webview2/how-to/debug?tabs=visualstudiocode)
-* [Get started with WebView2 in WinUI 3 (Windows App SDK)](https://docs.microsoft.com/en-us/microsoft-edge/webview2/get-started/winui)
-* [Create your first WinUI 3 app](https://docs.microsoft.com/en-us/windows/apps/winui/winui3/create-your-first-winui3-app?tabs=desktop-csharp)
-
 ### Setting up
+
+We will setup both VSCode and Visual Studio as our development tools. We want to use VSCode as much as  possible, but unless we want to design GUI by writing code, we need to use Visual Studio as well.  
+
+__Note: Installing Visual Studio will also install some dependencies for the project, which will be utilized by the VSCode as well.__
 
 #### Visual Studio
 
-* Install [Visual Studio](https://docs.microsoft.com/en-us/windows/apps/windows-app-sdk/set-up-your-development-environment)
+* Install
   * Universal Windows Platform development
   * Desktop development with C++
   * .NET Desktop Development
@@ -56,14 +46,35 @@ TODO:
 
 #### Visual Studio Code
 
-* Project has to have [launch.json](launch.json), which is already present in this project.
+* Install following extensions (not all are required, but helpful):
+  * C# - ms-dotnettools.csharp
+  * Docker - ms-azuretools.vscode-docker
+  * PowerShell - ms-vscode.powershell
+  * JS-CSS-HTML Formatter - lonefy.vscode-js-css-html-formatter
+  * Markdown ALl in One - yzhang.markdown-all-in-one
+  * markdownlint - davidanson.vscode-markdownlint
+* TODO: Project has to have [launch.json](launch.json), which is already present in this project.
+
+#### Other tools
+
+This is the list of other helpful software we have installed on our development machines.
+
+* **.NET 5 SDK x64 (Required!)**
+* **WebView2 Runtime (Required!)**
+* Github Desktop - Recommended for version control
+* Git - Recommended for version control
+* Docker desktop
 
 #### Create Visual Studio project
 
-* Start Visual Studio
+We are following this guide how to [setup new WinUI3 project][10].
+
+* [Start Visual Studio][12]
 * Create new project
 * Blank App, Packaged (WinUI in Desktop)
-* lazyadmin
+* lazyadmin (Windows 10 2004)
+
+*
 
 #### Notes
 
@@ -95,3 +106,17 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
+
+[1]: <https://docs.microsoft.com/en-us/microsoft-edge/webview2/#get-started> "Docs"
+[2]: <https://github.com/MicrosoftEdge/WebView2Samples#net-wpf-and-windows-forms> "Github Examples"
+[3]: <https://www.nuget.org/packages/Microsoft.Web.WebView2> "NuGet package"
+[4]: <https://docs.microsoft.com/en-us/microsoft-edge/webview2/concepts/versioning> "Understand WebView2 SDK versions"
+[5]: <https://docs.microsoft.com/en-us/microsoft-edge/webview2/how-to/set-preview-channel> "Switch to a preview channel to test upcoming APIs and features"
+[6]: <https://docs.microsoft.com/en-us/microsoft-edge/webview2/concepts/distribution> "Distribute a WebView2 app and the WebView2 Runtime"
+[7]: <https://docs.microsoft.com/en-us/microsoft-edge/webview2/concepts/security> "Best practices for developing secure WebView2 applications"
+[8]: <https://docs.microsoft.com/en-us/microsoft-edge/webview2/concepts/user-data-folder> "Manage the user data folder"
+[9]: <https://docs.microsoft.com/en-us/microsoft-edge/webview2/how-to/debug?tabs=visualstudiocode> "Get started debugging WebView2 apps"
+[10]: <https://docs.microsoft.com/en-us/microsoft-edge/webview2/get-started/winui> "Get started with WebView2 in WinUI 3 (Windows App SDK)"
+[11]: <https://docs.microsoft.com/en-us/windows/apps/winui/winui3/create-your-first-winui3-app?tabs=desktop-csharp> "Create your first WinUI 3 app"
+[12]: <https://docs.microsoft.com/en-us/windows/apps/windows-app-sdk/set-up-your-development-environment> "Install tools for Windows app development"
+[13]: <https://github.com/MicrosoftEdge/WebView2Samples/tree/master/SampleApps/WebView2WpfBrowser> "WebView2 WPF Browser"
