@@ -23,6 +23,8 @@ namespace HoubyStudio.LazyAdmin.DesktopApp
         public MainWindow()
         {
             InitializeComponent();
+            Uri index = new Uri(System.IO.Path.Combine(Environment.CurrentDirectory, "web/spa/index.html"));
+            webView.Source = index;
         }
     }
 }

@@ -3,9 +3,11 @@
 Welcome to the new Lazy Admin project. Here we will once again try to learn from our previous project to deliver better, cleaner, faster... product!
 This time around we will try it in better suited and more promising technologies called .NET (Just like PowerShell, yay!) and potentially Edge WebView2!
 
-## News
+## Changes
 
-At first we have tried to write our awesome Lazy Admin with WinUI3, but due to lack of documentation, online help and visual UI designer in Visual Studio we have quickly decided to drop that idea and try it with WPF instead.
+* At first we have tried to write our awesome Lazy Admin with WinUI3, but due to lack of documentation, online help and visual UI designer in Visual Studio we have quickly decided to drop that idea and try it with WPF instead.
+* We can try to utilize former Lazy Admin's UI. Afterall it is the thing we have spent most time on. WebView2 should be able to easily serve those files. If this proves as best solution, we will probably keep C# and JS code in separate repositories (e.g. rename lazy-admin to lazyadmin-ui).
+* First Lazy Admin has many calls to electron and filesystem, registry etc. It will take some cleanup before we can import files as SPA to new Lazy Admin. But we will do it!
 
 ## Overview
 
@@ -21,6 +23,7 @@ TODO:
 ### Setting up
 
 We will setup both VSCode and Visual Studio as our development tools. We want to use VSCode as much as possible, but unless we want to design GUI by writing code, we need to use Visual Studio as well.  
+We also need to install Quasar CLI to be able to build UI website pages.
 
 __Note: Installing Visual Studio will also install some dependencies for the project, which will be utilized by the VSCode as well.__
 
@@ -41,6 +44,16 @@ __Note: Installing Visual Studio will also install some dependencies for the pro
   * Markdown ALl in One - yzhang.markdown-all-in-one
   * markdownlint - davidanson.vscode-markdownlint
 * TODO: Project has to have [launch.json](launch.json)
+
+#### Quasar CLI
+
+* [Install Node.js](https://nodejs.org/en/)
+  * We have installed `14.17.5 LTS` for `Windows (x64)` and installed other `necessary tools` within setup (chocolatey, python3, etc.)
+* [Install yarn](https://classic.yarnpkg.com/en/docs/install)
+  * `npm install --global yarn`
+* [Install Quasar CLI](https://quasar.dev/quasar-cli/installation)
+  * `yarn global add @quasar/cli`
+  * Add `%LOCALAPPDATA%\yarn\bin` to your user PATH
 
 #### Other tools
 

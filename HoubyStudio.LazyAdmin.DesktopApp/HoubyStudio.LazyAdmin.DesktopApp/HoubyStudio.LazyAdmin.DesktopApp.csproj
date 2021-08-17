@@ -10,4 +10,9 @@
     <PackageReference Include="Microsoft.Web.WebView2" Version="1.0.902.49" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Content Include="web\spa\**">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
 </Project>
