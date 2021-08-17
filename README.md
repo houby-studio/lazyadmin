@@ -29,6 +29,7 @@ __Note: Installing Visual Studio will also install some dependencies for the pro
 * Install
   * .NET Desktop Development
 * Enable NuGet Package source
+* Install NuGet package `Microsoft.Web.WebView2`
 
 #### Visual Studio Code
 
