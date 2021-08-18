@@ -1,17 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace HoubyStudio.LazyAdmin.DesktopApp
 {
@@ -20,11 +8,19 @@ namespace HoubyStudio.LazyAdmin.DesktopApp
     /// </summary>
     public partial class MainWindow : Window
     {
+        private Uri index;
+
+        public string LazyAdminUserDataFolder
+        {
+            get { return (string)System.IO.Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "TestEdge"); }
+        }
+
         public MainWindow()
         {
             InitializeComponent();
-            Uri index = new Uri(System.IO.Path.Combine(Environment.CurrentDirectory, "web/spa/index.html"));
+            index = new Uri(System.IO.Path.Combine(Environment.CurrentDirectory, "web/spa/index.html"));
             webView.Source = index;
         }
+
     }
 }
