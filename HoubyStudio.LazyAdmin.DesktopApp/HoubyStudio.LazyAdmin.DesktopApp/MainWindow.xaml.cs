@@ -24,12 +24,19 @@ namespace HoubyStudio.LazyAdmin.DesktopApp
         /// <c>C:\Users\{username}\AppData\Local\LazyAdmin\EBWebView\WebResources\index.html</c></returns>
         private readonly Uri _indexFilePath;
 
+        // TEST
+        private CSharpBridgeToWebView _cSharpBridge = new CSharpBridgeToWebView();
+        private WebViewBridgeToCSharp _webViewBridge = new WebViewBridgeToCSharp();
+
         public MainWindow()
         {
             InitializeComponent();
 
             _cacheFolderPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "LazyAdmin");
             _indexFilePath = new Uri(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "LazyAdmin/EBWebView/WebResources/index.html"));
+
+            // TEST
+            _cSharpBridge.WebView = webView;
         }
 
         protected override async void OnContentRendered(EventArgs e)
@@ -41,6 +48,11 @@ namespace HoubyStudio.LazyAdmin.DesktopApp
                 // Create new environment configuration pointing to correct User Data Folder
                 CoreWebView2Environment webView2Environment = await CoreWebView2Environment.CreateAsync(null, _cacheFolderPath);
                 await webView.EnsureCoreWebView2Async(webView2Environment);
+
+                // TEST
+                webView.CoreWebView2.WebMessageReceived += UpdateTextBox;
+                await webView.CoreWebView2.AddScriptToExecuteOnDocumentCreatedAsync("window.chrome.webview.postMessage(window.document.URL);");
+                await webView.CoreWebView2.AddScriptToExecuteOnDocumentCreatedAsync("window.chrome.webview.addEventListener(\'message\', event => alert(event.data));");
 
                 // TODO: Check if _indexFilePath file exists and if not, try to download it from Github.
                 webView.Source = new UriBuilder(_indexFilePath).Uri;
@@ -59,5 +71,21 @@ namespace HoubyStudio.LazyAdmin.DesktopApp
             Application.Current.Shutdown();
         }
 
+        // TEST
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            _cSharpBridge.Message = TextBox.Text;
+            _cSharpBridge.ShowMessage();
+        }
+
+        // TEST
+        private void UpdateTextBox(object sender, CoreWebView2WebMessageReceivedEventArgs args)
+        {
+            String uri = args.TryGetWebMessageAsString();
+            TextBox.Text = uri;
+            _webViewBridge.Message = uri;
+            _webViewBridge.ShowMessage();
+
+        }
     }
 }

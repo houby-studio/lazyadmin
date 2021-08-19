@@ -9,7 +9,9 @@
         WindowStartupLocation="CenterScreen"
         Title="Lazy Admin" Height="900" Width="1440">
 
-    <DockPanel>
+    <DockPanel Margin="2,0,-2,0">
+        <TextBox x:Name="TextBox" Text="TextBox" TextWrapping="Wrap" Width="100" Height="677" VerticalAlignment="Top" HorizontalAlignment="Right"/>
+        <Button x:Name="Button" Click="Button_Click"></Button>
         <wv2:WebView2 Name="webView" />
     </DockPanel>
 
