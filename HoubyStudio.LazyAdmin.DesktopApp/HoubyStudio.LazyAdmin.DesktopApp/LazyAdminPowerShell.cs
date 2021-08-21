@@ -6,13 +6,16 @@ using System.Threading.Tasks;
 
 namespace HoubyStudio.LazyAdmin.DesktopApp
 {
-    class WebViewBridgeToCSharp
+    /// <summary>
+    /// Handles postMessage events received from EdgeView2 control.
+    /// </summary>
+    class LazyAdminPowerShell
     {
         public string Message { get; set; }
 
         public void ShowMessage()
         {
-            System.Windows.MessageBox.Show(Message);
+            _ = System.Windows.MessageBox.Show(Message);
         }
     }
 }
