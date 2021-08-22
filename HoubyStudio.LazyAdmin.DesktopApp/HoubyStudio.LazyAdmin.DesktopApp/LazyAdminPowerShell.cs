@@ -24,9 +24,9 @@ namespace HoubyStudio.LazyAdmin.DesktopApp
 
         public static void ReceiveMessage(object sender, CoreWebView2WebMessageReceivedEventArgs args)
         {
-            //_ = System.Windows.MessageBox.Show(args.TryGetWebMessageAsString());
             try
             {
+                // TODO: Replace with args.WebMessageAsJson and handle data accordingly
                 _powerShell.Text = args.TryGetWebMessageAsString();
             } catch
             {

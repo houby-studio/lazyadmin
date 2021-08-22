@@ -2,6 +2,8 @@
 using Microsoft.Web.WebView2.Wpf;
 using System;
 using System.IO;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 
 namespace HoubyStudio.LazyAdmin.DesktopApp
 {
@@ -49,7 +51,10 @@ namespace HoubyStudio.LazyAdmin.DesktopApp
 
         public static void PostWebMessageAsJSON(string Message)
         {
-            _webView.CoreWebView2.PostWebMessageAsJson($"{{json: true, msg: {Message}}}");
+            PowerShellData jsonMessage = new PowerShellData(Message);
+
+            string jsonString = JsonSerializer.Serialize(jsonMessage);
+            _webView.CoreWebView2.PostWebMessageAsJson(jsonString);
         }
 
         public static async void InitializeWebView()
@@ -61,9 +66,9 @@ namespace HoubyStudio.LazyAdmin.DesktopApp
             // TODO: Check if Lazy Admin's index.html exists, is loaded and can be injected.
             _webView.Source = new UriBuilder(_indexFilePath).Uri;
 
-            //await _webView.CoreWebView2.AddScriptToExecuteOnDocumentCreatedAsync("window.chrome.webview.postMessage(window.document.URL);");
             // Register event listener inside website
-            _ = await _webView.CoreWebView2.AddScriptToExecuteOnDocumentCreatedAsync("window.chrome.webview.addEventListener(\'message\', event => alert(event.data));");
+            // TODO: replace with listener, which triggers function to handle PowerShell result
+            //await _webView.CoreWebView2.AddScriptToExecuteOnDocumentCreatedAsync("window.chrome.webview.addEventListener(\'message\', event => alert(event.data));");
 
             // Register event listener for PowerShell handler
             _webView.CoreWebView2.WebMessageReceived += LazyAdminPowerShell.ReceiveMessage;

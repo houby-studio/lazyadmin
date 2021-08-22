@@ -45,5 +45,10 @@ namespace HoubyStudio.LazyAdmin.DesktopApp
             _ = MessageBox.Show(this, message, caption);
             Application.Current.Shutdown();
         }
+
+        private void Execute_Click(object sender, RoutedEventArgs e)
+        {
+            LazyAdminWebView.PostWebMessageAsJSON(PowerShell.Text);
+        }
     }
 }
