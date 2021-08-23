@@ -20,7 +20,7 @@ namespace HoubyStudio.LazyAdmin.DesktopApp
             LazyAdminWebView.WebView = webView;
 
             // TEST: Map mock PowerShell (TextBox) from XAML to 
-            LazyAdminPowerShell.PowerShell = PowerShell;
+            //LazyAdminPowerShell.PowerShell = PowerShell;
         }
 
         protected override void OnContentRendered(EventArgs e)
