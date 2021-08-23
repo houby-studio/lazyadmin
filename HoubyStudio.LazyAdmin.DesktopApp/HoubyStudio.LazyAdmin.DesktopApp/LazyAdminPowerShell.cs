@@ -2,6 +2,8 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Management.Automation;
+using System.Management.Automation.Runspaces;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Controls;
@@ -11,26 +13,28 @@ namespace HoubyStudio.LazyAdmin.DesktopApp
     /// <summary>
     /// Handles postMessage events received from EdgeView2 control.
     /// </summary>
-    public static class LazyAdminPowerShell
+    public class LazyAdminPowerShell
     {
 
-        // Mock PowerShell
-        private static TextBox _powerShell;
 
-        public static TextBox PowerShell
-        {
-            set => _powerShell = value;
-        }
+        private PowerShell _powerShell;
+        private RunspacePool runespacePool = RunspaceFactory.CreateRunspacePool();
 
-        public static void ReceiveMessage(object sender, CoreWebView2WebMessageReceivedEventArgs args)
+        //public static TextBox PowerShell
+        //{
+        //    set => _powerShell = value;
+        //}
+
+        public void ReceiveMessage(object sender, CoreWebView2WebMessageReceivedEventArgs args)
         {
             try
             {
                 // TODO: Replace with args.WebMessageAsJson and handle data accordingly
-                _powerShell.Text = args.TryGetWebMessageAsString();
-            } catch
+                //_powerShell = args.TryGetWebMessageAsString();
+            }
+            catch
             {
-                _powerShell.Text = "";
+                //_powerShell = "";
             }
         }
     }
