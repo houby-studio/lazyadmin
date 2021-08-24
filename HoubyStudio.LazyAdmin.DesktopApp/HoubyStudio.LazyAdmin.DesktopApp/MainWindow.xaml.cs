@@ -11,6 +11,14 @@ namespace HoubyStudio.LazyAdmin.DesktopApp
     public partial class MainWindow : Window
     {
 
+        private static LazyAdminPowerShell _lazyAdminPwsh = new();
+
+        public static LazyAdminPowerShell LazyAdminPwsh
+        {
+            get => _lazyAdminPwsh;
+            set => _lazyAdminPwsh = value;
+        }
+
         public MainWindow()
         {
             // Required. Loads the compiled page of a component from XAML.
@@ -19,8 +27,7 @@ namespace HoubyStudio.LazyAdmin.DesktopApp
             // Map webView generated from XAML to LazyAdminWebView, which initializes component.
             LazyAdminWebView.WebView = webView;
 
-            // TEST: Map mock PowerShell (TextBox) from XAML to 
-            //LazyAdminPowerShell.PowerShell = PowerShell;
+            LazyAdminPwsh.MockPowerShell = PowerShell;
         }
 
         protected override void OnContentRendered(EventArgs e)
@@ -49,6 +56,11 @@ namespace HoubyStudio.LazyAdmin.DesktopApp
         private void Execute_Click(object sender, RoutedEventArgs e)
         {
             LazyAdminWebView.PostWebMessageAsJSON(PowerShell.Text);
+        }
+
+        public static void ShowMessageFromThread()
+        {
+            LazyAdminWebView.ShowMessage("Ended");
         }
     }
 }

@@ -42,21 +42,33 @@ namespace HoubyStudio.LazyAdmin.DesktopApp
         /// </summary>
         /// <returns> Usually the returned file path will conform to this format:
         /// <c>C:\Users\{username}\AppData\Local\LazyAdmin\EBWebView\WebResources\index.html</c></returns>
-        private static readonly Uri _indexFilePath = new Uri(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "LazyAdmin/EBWebView/WebResources/index.html"));
+        private static readonly Uri _indexFilePath = new(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "LazyAdmin/EBWebView/WebResources/index.html"));
 
+        /// <summary>
+        /// Displays alert message within the WebView2 control.
+        /// </summary>
+        /// <param name="Message">String displayed in the alert popup.</param>
         public static void ShowMessage(string Message)
         {
             _webView.CoreWebView2.ExecuteScriptAsync($"alert('{Message}')");
         }
 
+        /// <summary>
+        /// Posts WebMessage in the JSON form to the WebView2 control.
+        /// </summary>
+        /// <param name="Message">JSON sent to the WebView2 control.</param>
         public static void PostWebMessageAsJSON(string Message)
         {
-            PowerShellData jsonMessage = new PowerShellData(Message);
+            PowerShellData jsonMessage = new(Message);
 
             string jsonString = JsonSerializer.Serialize(jsonMessage);
             _webView.CoreWebView2.PostWebMessageAsJson(jsonString);
         }
 
+        /// <summary>
+        /// Initializes new WebView2 instance with custom environment settings.<br />
+        /// Then ensures latest Lazy Admin UI files are present and loads them within the WebView2 control.
+        /// </summary>
         public static async void InitializeWebView()
         {
             // Initialize WebView with custom environment settings
@@ -71,7 +83,7 @@ namespace HoubyStudio.LazyAdmin.DesktopApp
             //await _webView.CoreWebView2.AddScriptToExecuteOnDocumentCreatedAsync("window.chrome.webview.addEventListener(\'message\', event => alert(event.data));");
 
             // Register event listener for PowerShell handler
-            //_webView.CoreWebView2.WebMessageReceived += LazyAdminPowerShell.ReceiveMessage;
+            _webView.CoreWebView2.WebMessageReceived += MainWindow.LazyAdminPwsh.ReceiveMessage;
         }
     }
 }
