@@ -58,9 +58,14 @@ namespace HoubyStudio.LazyAdmin.DesktopApp
             LazyAdminWebView.PostWebMessageAsJSON(PowerShell.Text);
         }
 
-        public static void ShowMessageFromThread()
+        public static void ShowMessageFromThread(Guid uid, string status, string message)
         {
-            LazyAdminWebView.ShowMessage("Ended");
+            LazyAdminWebView.PostRunspaceStatus(uid, status, message);
+        }
+
+        public static void ShowMessageFromThread(Guid uid, string status)
+        {
+            LazyAdminWebView.PostRunspaceStatus(uid, status);
         }
     }
 }

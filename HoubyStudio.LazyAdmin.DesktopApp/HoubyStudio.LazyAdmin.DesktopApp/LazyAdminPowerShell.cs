@@ -10,6 +10,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Controls;
 using System.Windows.Threading;
+using Newtonsoft.Json;
 
 namespace HoubyStudio.LazyAdmin.DesktopApp
 {
@@ -24,7 +25,7 @@ namespace HoubyStudio.LazyAdmin.DesktopApp
 
         public void ReceiveMessage(object sender, CoreWebView2WebMessageReceivedEventArgs args)
         {
-            MockPowerShell.Text = "Staaaaaaarting";
+            MockPowerShell.Text = "Execution started";
             LazyAdminWebView.ShowMessage("Execution started");
             ////try
             ////{
@@ -93,11 +94,16 @@ namespace HoubyStudio.LazyAdmin.DesktopApp
 
                 using (PowerShell ps = PowerShell.Create())
                 {
+                    var receivedJson = JsonConvert.DeserializeObject<ExecutePowerShellMessage>(args.WebMessageAsJson);
+                    var uid = receivedJson.Uid;
+                    var command = receivedJson.Command;
                     // Set the PowerShell object to use the JEA runspace
+                    // TODO: On creation pass runspace id or instanceId to webview, so it knows what to kill
+                    // OR LazyAdminPowerShell could hold reference to each runspace associated to uid from WebView and communicate with identified runspace that way
                     ps.Runspace = runspace;
 
                     // Now you can add and invoke commands
-                    ps.AddCommand("Get-Process");
+                    _ = ps.AddCommand(command);
 
                     // Simple handle PowerShell async
                     //IAsyncResult gpcAsyncResult = ps.BeginInvoke();
@@ -116,19 +122,27 @@ namespace HoubyStudio.LazyAdmin.DesktopApp
                     // Add the event handlers.  If we did not care about hooking the DataAdded
                     // event, we would let BeginInvoke create the output stream for us.
                     PSDataCollection<PSObject> output = new();
+                    // TODO: Extend DataAddedEventArgs and PSInvocationStateChangedEventArgs to pass uid and command
                     output.DataAdded += new EventHandler<DataAddedEventArgs>(Output_DataAdded);
                     ps.InvocationStateChanged += new EventHandler<PSInvocationStateChangedEventArgs>(Powershell_InvocationStateChanged);
 
                     // Invoke the pipeline asynchronously.
                     IAsyncResult asyncResult = ps.BeginInvoke<PSObject, PSObject>(null, output);
 
-                    PSDataCollection<PSObject> gpcOutput = ps.EndInvoke(asyncResult);
+                    try
+                    {
+                        PSDataCollection<PSObject> gpcOutput = ps.EndInvoke(asyncResult);
+                    }
+                    catch
+                    {
+
+                    }
 
                     // This is how different thread may access function from main thread
-                    App.Current.Dispatcher.BeginInvoke(new Action(() =>
-                    {
-                        MainWindow.ShowMessageFromThread();
-                    }));
+                    //_ = System.Windows.Application.Current.Dispatcher.BeginInvoke(new Action(() =>
+                    //  {
+                    //      MainWindow.ShowMessageFromThread(uid);
+                    //  }));
                     // This throws error
                     //LazyAdminWebView.ShowMessage("Endded invoke");
 
@@ -169,6 +183,11 @@ namespace HoubyStudio.LazyAdmin.DesktopApp
             Collection<PSObject> results = myp.ReadAll();
             foreach (PSObject result in results)
             {
+                _ = System.Windows.Application.Current.Dispatcher.BeginInvoke(new Action(() =>
+                {
+                    //LazyAdminWebView.ShowMessage("Results obtained");
+                    MainWindow.ShowMessageFromThread(Guid.NewGuid(), "Running");
+                }));
                 //LazyAdminWebView.ShowMessage("Result mate");
                 //dispatcher.Invoke((Action)(() => MockPowerShell.Text = result + "`r`n"));
             }
@@ -188,6 +207,11 @@ namespace HoubyStudio.LazyAdmin.DesktopApp
             {
                 //dispatcher.Invoke((Action)(() => MockPowerShell.Text = "Processing completed, press a key to exit!"));
                 //MockPowerShell.Text = "Processing completed, press a key to exit!";
+                _ = System.Windows.Application.Current.Dispatcher.BeginInvoke(new Action(() =>
+                {
+                    LazyAdminWebView.ShowMessage("Finished");
+                    MainWindow.ShowMessageFromThread(Guid.NewGuid(), "Completed");
+                }));
             }
         }
     }

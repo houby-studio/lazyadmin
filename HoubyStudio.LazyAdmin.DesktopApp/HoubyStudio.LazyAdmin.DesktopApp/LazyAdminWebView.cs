@@ -2,8 +2,7 @@
 using Microsoft.Web.WebView2.Wpf;
 using System;
 using System.IO;
-using System.Text.Json;
-using System.Text.Json.Serialization;
+using Newtonsoft.Json;
 
 namespace HoubyStudio.LazyAdmin.DesktopApp
 {
@@ -54,6 +53,28 @@ namespace HoubyStudio.LazyAdmin.DesktopApp
         }
 
         /// <summary>
+        /// Change Runspace status
+        /// </summary>
+        public static void PostRunspaceStatus(Guid Uid, string Status, string Result)
+        {
+            CSharpRunspaceStatusMessage jsonMessage = new(Uid, Status, Result);
+
+            string jsonString = JsonConvert.SerializeObject(jsonMessage);
+            _webView.CoreWebView2.PostWebMessageAsJson(jsonString);
+        }
+
+        /// <summary>
+        /// Change Runspace status
+        /// </summary>
+        public static void PostRunspaceStatus(Guid Uid, string Status)
+        {
+            CSharpRunspaceStatusMessage jsonMessage = new(Uid, Status);
+
+            string jsonString = JsonConvert.SerializeObject(jsonMessage);
+            _webView.CoreWebView2.PostWebMessageAsJson(jsonString);
+        }
+
+        /// <summary>
         /// Posts WebMessage in the JSON form to the WebView2 control.
         /// </summary>
         /// <param name="Message">JSON sent to the WebView2 control.</param>
@@ -61,7 +82,7 @@ namespace HoubyStudio.LazyAdmin.DesktopApp
         {
             PowerShellData jsonMessage = new(Message);
 
-            string jsonString = JsonSerializer.Serialize(jsonMessage);
+            string jsonString = JsonConvert.SerializeObject(jsonMessage);
             _webView.CoreWebView2.PostWebMessageAsJson(jsonString);
         }
 
