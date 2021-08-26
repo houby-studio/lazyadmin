@@ -4,9 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace HoubyStudio.LazyAdmin.DesktopApp.Models
+namespace HoubyStudio.LazyAdmin.DesktopApp.Web.Services
 {
-    class PowerShellManager
+    class WebViewService
     {
+
     }
 }
