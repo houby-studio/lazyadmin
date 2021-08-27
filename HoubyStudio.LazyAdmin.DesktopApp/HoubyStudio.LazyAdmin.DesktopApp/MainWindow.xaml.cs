@@ -1,4 +1,7 @@
-﻿using Microsoft.Web.WebView2.Core;
+﻿using HoubyStudio.LazyAdmin.DesktopApp.Web.Services;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Web.WebView2.Core;
+using Microsoft.Web.WebView2.Wpf;
 using System;
 using System.IO;
 using System.Windows;
@@ -10,8 +13,22 @@ namespace HoubyStudio.LazyAdmin.DesktopApp
     /// </summary>
     public partial class MainWindow : Window
     {
+        /// <summary>
+        /// Service provider
+        /// </summary>
+        //protected readonly IServiceProvider _services;
+
+        protected readonly IWebViewService _webViewService;
+
+        private static WebView2 _webView;
 
         private static LazyAdminPowerShell _lazyAdminPwsh = new();
+
+        public static WebView2 WebView
+        {
+            get => _webView;
+            set => _webView = value;
+        }
 
         public static LazyAdminPowerShell LazyAdminPwsh
         {
@@ -19,13 +36,16 @@ namespace HoubyStudio.LazyAdmin.DesktopApp
             set => _lazyAdminPwsh = value;
         }
 
-        public MainWindow()
+        public MainWindow(IWebViewService webViewService)
         {
             // Required. Loads the compiled page of a component from XAML.
             InitializeComponent();
 
             // Map webView generated from XAML to LazyAdminWebView, which initializes component.
             LazyAdminWebView.WebView = webView;
+            _webView = webView;
+
+            _webViewService = webViewService;
 
             LazyAdminPwsh.MockPowerShell = PowerShell;
         }
@@ -53,9 +73,12 @@ namespace HoubyStudio.LazyAdmin.DesktopApp
             Application.Current.Shutdown();
         }
 
-        private void Execute_Click(object sender, RoutedEventArgs e)
+        private async void Execute_Click(object sender, RoutedEventArgs e)
         {
-            LazyAdminWebView.PostWebMessageAsJSON(PowerShell.Text);
+            // TODO: Are we able to load service using scope and service provider?
+            //using var scope = _services.CreateScope();
+            //var webViewService = scope.ServiceProvider.GetRequiredService<IWebViewService>();
+            var result = await _webViewService.ShowMessageAsync("PowerShell.Text");
         }
 
         public static void ShowMessageFromThread(Guid uid, string status, string message)

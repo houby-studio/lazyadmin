@@ -1,9 +1,13 @@
 ﻿using Microsoft.Web.WebView2.Wpf;
+using System.Threading.Tasks;
 
 namespace HoubyStudio.LazyAdmin.DesktopApp.Web.Services
 {
-    interface IWebViewService
+    /// <summary>
+    /// WebView service interface
+    /// </summary>
+    public interface IWebViewService
     {
-
+        Task<string> ShowMessageAsync(string message);
     }
 }

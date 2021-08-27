@@ -12,6 +12,7 @@
 
   <ItemGroup>
     <PackageReference Include="Cake.Powershell" Version="1.0.1" />
+    <PackageReference Include="Microsoft.Extensions.Hosting" Version="5.0.0" />
     <PackageReference Include="Microsoft.PowerShell.SDK" Version="7.1.4" />
     <PackageReference Include="Microsoft.Web.WebView2" Version="1.0.902.49" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
@@ -19,7 +20,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="PowerShell\Providers\" />
+    <Folder Include="Pwsh\Providers\" />
   </ItemGroup>
 
 </Project>
