@@ -1,26 +1,30 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿// <copyright file="WebViewMessage.cs" company="Houby Studio">
+// Copyright (c) Houby Studio. All rights reserved.
+// </copyright>
 
 namespace HoubyStudio.LazyAdmin.DesktopApp
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Text;
+    using System.Threading.Tasks;
+
     public class WebViewMessage
     {
-        private Guid _uid;
-        private Guid _token;
+        private Guid uid;
+        private Guid token;
 
         public Guid Uid
         {
-            set => _uid = value;
-            get => _uid;
+            set => this.uid = value;
+            get => this.uid;
         }
 
         public Guid Token
         {
-            set => _token = value;
-            get => _token;
+            set => this.token = value;
+            get => this.token;
         }
     }
 }

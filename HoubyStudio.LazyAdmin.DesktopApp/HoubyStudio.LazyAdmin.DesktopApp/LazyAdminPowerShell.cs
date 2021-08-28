@@ -1,79 +1,81 @@
-﻿using Microsoft.Web.WebView2.Core;
-using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Globalization;
-using System.Linq;
-using System.Management.Automation;
-using System.Management.Automation.Runspaces;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Controls;
-using System.Windows.Threading;
-using Newtonsoft.Json;
+﻿// <copyright file="LazyAdminPowerShell.cs" company="Houby Studio">
+// Copyright (c) Houby Studio. All rights reserved.
+// </copyright>
 
 namespace HoubyStudio.LazyAdmin.DesktopApp
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Collections.ObjectModel;
+    using System.Globalization;
+    using System.Linq;
+    using System.Management.Automation;
+    using System.Management.Automation.Runspaces;
+    using System.Text;
+    using System.Threading.Tasks;
+    using System.Windows.Controls;
+    using System.Windows.Threading;
+    using Microsoft.Web.WebView2.Core;
+    using Newtonsoft.Json;
+
     /// <summary>
     /// Handles postMessage events received from EdgeView2 control.
     /// </summary>
     public class LazyAdminPowerShell
     {
-
         public TextBox MockPowerShell;
-        //private Dispatcher dispatcher = Dispatcher.CurrentDispatcher;
+        // private Dispatcher dispatcher = Dispatcher.CurrentDispatcher;
 
         public void ReceiveMessage(object sender, CoreWebView2WebMessageReceivedEventArgs args)
         {
-            MockPowerShell.Text = "Execution started";
+            this.MockPowerShell.Text = "Execution started";
             LazyAdminWebView.ShowMessage("Execution started");
             ////try
             ////{
             //// Open new runspace
-            //runspacePool.Open();
+            // runspacePool.Open();
 
             //// Create PowerShell object
-            //PowerShell powerShell = PowerShell.Create();
+            // PowerShell powerShell = PowerShell.Create();
 
             //// Assign PowerShell object to runspace
-            //powerShell.RunspacePool = runspacePool;
+            // powerShell.RunspacePool = runspacePool;
 
             //// Command received from WebView
-            //string data = args.WebMessageAsJson;
+            // string data = args.WebMessageAsJson;
 
             //// Debug
-            //MockPowerShell.Text = data;
+            // MockPowerShell.Text = data;
 
             //// Add command to PowerShell object
-            //powerShell.AddCommand("Get-Command");
+            // powerShell.AddCommand("Get-Command");
 
             //// Invoke the command asynchronously.
-            //IAsyncResult gpcAsyncResult = powerShell.BeginInvoke();
+            // IAsyncResult gpcAsyncResult = powerShell.BeginInvoke();
             //// Get the results of running the command.
-            //PSDataCollection<PSObject> gpcOutput = powerShell.EndInvoke(gpcAsyncResult);
+            // PSDataCollection<PSObject> gpcOutput = powerShell.EndInvoke(gpcAsyncResult);
             ////}
             ////catch
             ////{
             ////    MockPowerShell.Text = "";
             ////}
-            //runspacePool.Close();
-
+            // runspacePool.Close();
 
             // TODO: If running command within JEA session
-            //string computerName = "SERVER01";
-            //string configName = "JEAMaintenance";
+            // string computerName = "SERVER01";
+            // string configName = "JEAMaintenance";
             // See https://docs.microsoft.com/dotnet/api/system.management.automation.pscredential
 
             // If running on local machine
             // Needs to run elevated to be able to remote on localhost
-            //WSManConnectionInfo connectionInfo = new WSManConnectionInfo();
+            // WSManConnectionInfo connectionInfo = new WSManConnectionInfo();
 
             //// If loading alternate credentials from credential store
-            //System.Security.SecureString password = new();
-            //PSCredential creds = new("test", password);// create a PSCredential object here
+            // System.Security.SecureString password = new();
+            // PSCredential creds = new("test", password);// create a PSCredential object here
 
             //// Run with alternate credentials on remote host
-            //WSManConnectionInfo connectionInfoRemoteCred = new WSManConnectionInfo(
+            // WSManConnectionInfo connectionInfoRemoteCred = new WSManConnectionInfo(
             //    false,                 // Use SSL
             //    computerName,          // Computer name
             //    5985,                  // WSMan Port
@@ -83,8 +85,8 @@ namespace HoubyStudio.LazyAdmin.DesktopApp
             //    creds);                // Credentials
 
             //// Run with default credentials on remote host
-            //WSManConnectionInfo connectionInfoRemoteDefaultCred = new WSManConnectionInfo(new Uri($"http://{computerName}:5985/WSMAN"));
-            //connectionInfoRemoteDefaultCred.ShellUri = string.Format(CultureInfo.InvariantCulture, "http://schemas.microsoft.com/powershell/{0}", configName);
+            // WSManConnectionInfo connectionInfoRemoteDefaultCred = new WSManConnectionInfo(new Uri($"http://{computerName}:5985/WSMAN"));
+            // connectionInfoRemoteDefaultCred.ShellUri = string.Format(CultureInfo.InvariantCulture, "http://schemas.microsoft.com/powershell/{0}", configName);
 
             // Now, use the connection info to create a runspace where you can run the commands
             using (Runspace runspace = RunspaceFactory.CreateRunspace(/*connectionInfo*/))
@@ -106,16 +108,16 @@ namespace HoubyStudio.LazyAdmin.DesktopApp
                     _ = ps.AddCommand(command);
 
                     // Simple handle PowerShell async
-                    //IAsyncResult gpcAsyncResult = ps.BeginInvoke();
+                    // IAsyncResult gpcAsyncResult = ps.BeginInvoke();
                     //// Get the results of running the command.
-                    //PSDataCollection<PSObject> gpcOutput = ps.EndInvoke(gpcAsyncResult);
+                    // PSDataCollection<PSObject> gpcOutput = ps.EndInvoke(gpcAsyncResult);
 
                     // Simple handle PowerShell sync
-                    //foreach (var result in ps.Invoke())
-                    //{
+                    // foreach (var result in ps.Invoke())
+                    // {
                     //    Console.WriteLine(result);
                     //    MockPowerShell.Text += result;
-                    //}
+                    // }
 
                     // Handle properly asyncwith events and all
 
@@ -123,8 +125,8 @@ namespace HoubyStudio.LazyAdmin.DesktopApp
                     // event, we would let BeginInvoke create the output stream for us.
                     PSDataCollection<PSObject> output = new();
                     // TODO: Extend DataAddedEventArgs and PSInvocationStateChangedEventArgs to pass uid and command
-                    output.DataAdded += new EventHandler<DataAddedEventArgs>(Output_DataAdded);
-                    ps.InvocationStateChanged += new EventHandler<PSInvocationStateChangedEventArgs>(Powershell_InvocationStateChanged);
+                    output.DataAdded += new EventHandler<DataAddedEventArgs>(this.Output_DataAdded);
+                    ps.InvocationStateChanged += new EventHandler<PSInvocationStateChangedEventArgs>(this.Powershell_InvocationStateChanged);
 
                     // Invoke the pipeline asynchronously.
                     IAsyncResult asyncResult = ps.BeginInvoke<PSObject, PSObject>(null, output);
@@ -135,33 +137,31 @@ namespace HoubyStudio.LazyAdmin.DesktopApp
                     }
                     catch
                     {
-
                     }
 
                     // This is how different thread may access function from main thread
-                    //_ = System.Windows.Application.Current.Dispatcher.BeginInvoke(new Action(() =>
+                    // _ = System.Windows.Application.Current.Dispatcher.BeginInvoke(new Action(() =>
                     //  {
                     //      MainWindow.ShowMessageFromThread(uid);
                     //  }));
                     // This throws error
-                    //LazyAdminWebView.ShowMessage("Endded invoke");
-
+                    // LazyAdminWebView.ShowMessage("Endded invoke");
 
                     // Wait for things to happen. If the user hits a key before the
                     // script has completed, then call the PowerShell Stop() method
                     // to halt processing.
-                    //Console.ReadKey();
-                    //if (ps.InvocationStateInfo.State != PSInvocationState.Completed)
-                    //{
+                    // Console.ReadKey();
+                    // if (ps.InvocationStateInfo.State != PSInvocationState.Completed)
+                    // {
                     //    // Stop the invocation of the pipeline.
                     //    Console.WriteLine("\nStopping the pipeline!\n");
                     //    ps.Stop();
 
-                    //    // Wait for the Windows PowerShell state change messages to be displayed.
+                    // // Wait for the Windows PowerShell state change messages to be displayed.
                     //    System.Threading.Thread.Sleep(500);
                     //    Console.WriteLine("\nPress a key to exit");
                     //    Console.ReadKey();
-                    //}
+                    // }
                 }
 
                 // Close the runspace
@@ -185,11 +185,11 @@ namespace HoubyStudio.LazyAdmin.DesktopApp
             {
                 _ = System.Windows.Application.Current.Dispatcher.BeginInvoke(new Action(() =>
                 {
-                    //LazyAdminWebView.ShowMessage("Results obtained");
+                    // LazyAdminWebView.ShowMessage("Results obtained");
                     MainWindow.ShowMessageFromThread(Guid.NewGuid(), "Running");
                 }));
-                //LazyAdminWebView.ShowMessage("Result mate");
-                //dispatcher.Invoke((Action)(() => MockPowerShell.Text = result + "`r`n"));
+                // LazyAdminWebView.ShowMessage("Result mate");
+                // dispatcher.Invoke((Action)(() => MockPowerShell.Text = result + "`r`n"));
             }
         }
 
@@ -202,11 +202,11 @@ namespace HoubyStudio.LazyAdmin.DesktopApp
         /// <param name="e">The PowerShell state information.</param>
         private void Powershell_InvocationStateChanged(object sender, PSInvocationStateChangedEventArgs e)
         {
-            //dispatcher.Invoke((Action)(() => MockPowerShell.Text = ("PowerShell object state changed: state: {0}\n", e.InvocationStateInfo.State) + "`r`n"));
+            // dispatcher.Invoke((Action)(() => MockPowerShell.Text = ("PowerShell object state changed: state: {0}\n", e.InvocationStateInfo.State) + "`r`n"));
             if (e.InvocationStateInfo.State == PSInvocationState.Completed)
             {
-                //dispatcher.Invoke((Action)(() => MockPowerShell.Text = "Processing completed, press a key to exit!"));
-                //MockPowerShell.Text = "Processing completed, press a key to exit!";
+                // dispatcher.Invoke((Action)(() => MockPowerShell.Text = "Processing completed, press a key to exit!"));
+                // MockPowerShell.Text = "Processing completed, press a key to exit!";
                 _ = System.Windows.Application.Current.Dispatcher.BeginInvoke(new Action(() =>
                 {
                     LazyAdminWebView.ShowMessage("Finished");

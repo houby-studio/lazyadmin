@@ -1,42 +1,42 @@
-﻿using HoubyStudio.LazyAdmin.DesktopApp.Web.Providers;
-using Microsoft.Extensions.Logging;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿// <copyright file="WebViewService.cs" company="Houby Studio">
+// Copyright (c) Houby Studio. All rights reserved.
+// </copyright>
 
 namespace HoubyStudio.LazyAdmin.DesktopApp.Web.Services
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Text;
+    using System.Threading.Tasks;
+    using HoubyStudio.LazyAdmin.DesktopApp.Web.Providers;
+    using Microsoft.Extensions.Logging;
+
     /// <summary>
-    /// WebView service
+    /// WebView service.
     /// </summary>
     public class WebViewService : IWebViewService
     {
-        #region Data members
+        private readonly ILogger<WebViewService> logger;
+        private readonly IWebViewCommunicationProvider communicationProvider;
 
-        private readonly ILogger<WebViewService> _logger;
-        private readonly IWebViewCommunicationProvider _communicationProvider;
-
-        #endregion //Data members
-
-        #region Constructors
-
+        /// <summary>
+        /// Initializes a new instance of the <see cref="WebViewService"/> class.
+        /// </summary>
+        /// <param name="logger">TODO:1.</param>
+        /// <param name="communicationProvider">TODO:2.</param>
         public WebViewService(ILogger<WebViewService> logger, IWebViewCommunicationProvider communicationProvider)
         {
-            _logger = logger;
-            _communicationProvider = communicationProvider;
+            this.logger = logger;
+            this.communicationProvider = communicationProvider;
+
+            this.logger.LogInformation("Created new WebViewService");
         }
 
-        #endregion //Constructors
-
-        #region Public methods
-
+        /// <inheritdoc/>
         public virtual async Task<string> ShowMessageAsync(string message)
         {
-            return await _communicationProvider.ShowMessageAsync(message);
+            return await this.communicationProvider.ShowMessageAsync(message);
         }
-
-        #endregion //Public methods
     }
 }

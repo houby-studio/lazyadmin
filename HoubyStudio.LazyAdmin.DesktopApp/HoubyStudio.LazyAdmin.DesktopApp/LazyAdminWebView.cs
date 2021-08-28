@@ -1,11 +1,15 @@
-﻿using Microsoft.Web.WebView2.Core;
-using Microsoft.Web.WebView2.Wpf;
-using System;
-using System.IO;
-using Newtonsoft.Json;
+﻿// <copyright file="LazyAdminWebView.cs" company="Houby Studio">
+// Copyright (c) Houby Studio. All rights reserved.
+// </copyright>
 
 namespace HoubyStudio.LazyAdmin.DesktopApp
 {
+    using System;
+    using System.IO;
+    using Microsoft.Web.WebView2.Core;
+    using Microsoft.Web.WebView2.Wpf;
+    using Newtonsoft.Json;
+
     /// <summary>
     /// <para> Class <c>LazyAdminWebView</c> handles initialization and script injection to WebView2 control.<br />
     /// Additionally handles communication from host to WebView2 control via method <c>PostWebMessageAsJSON</c>.<br />
@@ -21,6 +25,19 @@ namespace HoubyStudio.LazyAdmin.DesktopApp
     /// <see cref="PostWebMessageAsJSON"/>
     public static class LazyAdminWebView
     {
+        /// <summary>
+        /// Resolves to the full path of the user data folder for WebView2 component.
+        /// </summary>
+        /// <returns> Usually the returned folder path will conform to this format:
+        /// <c>C:\Users\{username}\AppData\Local\LazyAdmin</c>.</returns>
+        private static readonly string CacheFolderPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "LazyAdmin");
+
+        /// <summary>
+        /// Resolves to the index.html file, which gets rendered by WebView2 component.
+        /// </summary>
+        /// <returns> Usually the returned file path will conform to this format:
+        /// <c>C:\Users\{username}\AppData\Local\LazyAdmin\EBWebView\WebResources\index.html</c>.</returns>
+        private static readonly Uri IndexFilePath = new(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "LazyAdmin/EBWebView/WebResources/index.html"));
 
         private static WebView2 _webView;
 
@@ -30,30 +47,16 @@ namespace HoubyStudio.LazyAdmin.DesktopApp
         }
 
         /// <summary>
-        /// Resolves to the full path of the user data folder for WebView2 component.
-        /// </summary>
-        /// <returns> Usually the returned folder path will conform to this format:
-        /// <c>C:\Users\{username}\AppData\Local\LazyAdmin</c></returns>
-        private static readonly string _cacheFolderPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "LazyAdmin");
-
-        /// <summary>
-        /// Resolves to the index.html file, which gets rendered by WebView2 component.
-        /// </summary>
-        /// <returns> Usually the returned file path will conform to this format:
-        /// <c>C:\Users\{username}\AppData\Local\LazyAdmin\EBWebView\WebResources\index.html</c></returns>
-        private static readonly Uri _indexFilePath = new(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "LazyAdmin/EBWebView/WebResources/index.html"));
-
-        /// <summary>
         /// Displays alert message within the WebView2 control.
         /// </summary>
-        /// <param name="Message">String displayed in the alert popup.</param>
-        public static void ShowMessage(string Message)
+        /// <param name="message">String displayed in the alert popup.</param>
+        public static void ShowMessage(string message)
         {
-            _webView.CoreWebView2.ExecuteScriptAsync($"alert('{Message}')");
+            _webView.CoreWebView2.ExecuteScriptAsync($"alert('{message}')");
         }
 
         /// <summary>
-        /// Change Runspace status
+        /// Change Runspace status.
         /// </summary>
         public static void PostRunspaceStatus(Guid Uid, string Status, string Result)
         {
@@ -64,11 +67,13 @@ namespace HoubyStudio.LazyAdmin.DesktopApp
         }
 
         /// <summary>
-        /// Change Runspace status
+        /// Change Runspace status.
         /// </summary>
-        public static void PostRunspaceStatus(Guid Uid, string Status)
+        /// <param name="uid">uid.</param>
+        /// <param name="status">status.</param>
+        public static void PostRunspaceStatus(Guid uid, string status)
         {
-            CSharpRunspaceStatusMessage jsonMessage = new(Uid, Status);
+            CSharpRunspaceStatusMessage jsonMessage = new(uid, status);
 
             string jsonString = JsonConvert.SerializeObject(jsonMessage);
             _webView.CoreWebView2.PostWebMessageAsJson(jsonString);
@@ -93,18 +98,18 @@ namespace HoubyStudio.LazyAdmin.DesktopApp
         public static async void InitializeWebView()
         {
             // Initialize WebView with custom environment settings
-            CoreWebView2Environment coreWebView2Environment = await CoreWebView2Environment.CreateAsync(null, _cacheFolderPath);
+            CoreWebView2Environment coreWebView2Environment = await CoreWebView2Environment.CreateAsync(null, CacheFolderPath);
             await _webView.EnsureCoreWebView2Async(coreWebView2Environment);
 
             // TODO: Check if Lazy Admin's index.html exists, is loaded and can be injected.
-            _webView.Source = new UriBuilder(_indexFilePath).Uri;
+            _webView.Source = new UriBuilder(IndexFilePath).Uri;
 
             // Register event listener inside website
             // TODO: replace with listener, which triggers function to handle PowerShell result
-            //await _webView.CoreWebView2.AddScriptToExecuteOnDocumentCreatedAsync("window.chrome.webview.addEventListener(\'message\', event => alert(event.data));");
+            // await _webView.CoreWebView2.AddScriptToExecuteOnDocumentCreatedAsync("window.chrome.webview.addEventListener(\'message\', event => alert(event.data));");
 
             // Register event listener for PowerShell handler
-            _webView.CoreWebView2.WebMessageReceived += MainWindow.LazyAdminPwsh.ReceiveMessage;
+            _webView.CoreWebView2.WebMessageReceived += MainWindow.GetLazyAdminPwsh().ReceiveMessage;
         }
     }
 }

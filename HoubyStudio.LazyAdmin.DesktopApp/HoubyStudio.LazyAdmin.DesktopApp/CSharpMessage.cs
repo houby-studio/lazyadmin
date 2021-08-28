@@ -1,19 +1,23 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿// <copyright file="CSharpMessage.cs" company="Houby Studio">
+// Copyright (c) Houby Studio. All rights reserved.
+// </copyright>
 
 namespace HoubyStudio.LazyAdmin.DesktopApp
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Text;
+    using System.Threading.Tasks;
+
     public class CSharpMessage
     {
-        private Guid _uid;
+        private Guid uid;
 
         public Guid Uid
         {
-            set => _uid = value;
-            get => _uid;
+            set => this.uid = value;
+            get => this.uid;
         }
     }
 }

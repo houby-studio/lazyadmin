@@ -4,7 +4,6 @@
              xmlns:local="clr-namespace:HoubyStudio.LazyAdmin.DesktopApp"
              Startup="Application_Startup"
              Exit="Application_Exit">
-    <!--StartupUri="MainWindow.xaml"-->
     <Application.Resources>
 
     </Application.Resources>

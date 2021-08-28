@@ -1,4 +1,7 @@
-﻿
+﻿// <copyright file="PwshService.cs" company="Houby Studio">
+// Copyright (c) Houby Studio. All rights reserved.
+// </copyright>
+
 namespace HoubyStudio.LazyAdmin.DesktopApp.Pwsh.Services
 {
     /// <summary>
@@ -11,17 +14,6 @@ namespace HoubyStudio.LazyAdmin.DesktopApp.Pwsh.Services
         /// </summary>
         public PwshService()
         {
-            #region Members
-            #endregion //Members
-
-            #region Constructors
-            #endregion //Constructors
-
-            #region Public Methods
-            #endregion //Public Methods
-
-            #region Private Methods
-            #endregion //Private Methods
         }
     }
 }

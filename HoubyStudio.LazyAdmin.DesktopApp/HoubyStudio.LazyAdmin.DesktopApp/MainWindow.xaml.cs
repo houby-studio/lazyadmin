@@ -1,53 +1,86 @@
-﻿using HoubyStudio.LazyAdmin.DesktopApp.Web.Services;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Web.WebView2.Core;
-using Microsoft.Web.WebView2.Wpf;
-using System;
-using System.IO;
-using System.Windows;
+﻿// <copyright file="MainWindow.xaml.cs" company="Houby Studio">
+// Copyright (c) Houby Studio. All rights reserved.
+// </copyright>
 
 namespace HoubyStudio.LazyAdmin.DesktopApp
 {
+    using System;
+    using System.IO;
+    using System.Windows;
+    using HoubyStudio.LazyAdmin.DesktopApp.Web.Services;
+    using Microsoft.Extensions.DependencyInjection;
+    using Microsoft.Web.WebView2.Core;
+    using Microsoft.Web.WebView2.Wpf;
+
     /// <summary>
-    /// Interaction logic for MainWindow.xaml
+    /// Interaction logic for MainWindow.xaml.
     /// </summary>
     public partial class MainWindow : Window
     {
         /// <summary>
-        /// Service provider
+        /// Service provider.
         /// </summary>
-        //protected readonly IServiceProvider _services;
+        // protected readonly IServiceProvider _services;
+        // private static WebView2 webView1;
+        // public static WebView2 WebView => webView1;
+        // public static void SetWebView(WebView2 value) => webView1 = value;
+        private readonly IWebViewService webViewService;
 
-        protected readonly IWebViewService _webViewService;
+        private static LazyAdminPowerShell lazyAdminPwsh = new();
 
-        private static WebView2 _webView;
-
-        private static LazyAdminPowerShell _lazyAdminPwsh = new();
-
-        public static WebView2 WebView
-        {
-            get => _webView;
-            set => _webView = value;
-        }
-
-        public static LazyAdminPowerShell LazyAdminPwsh
-        {
-            get => _lazyAdminPwsh;
-            set => _lazyAdminPwsh = value;
-        }
-
+        /// <summary>
+        /// Initializes a new instance of the <see cref="MainWindow"/> class.
+        /// </summary>
+        /// <param name="webViewService">To be removed.</param>
         public MainWindow(IWebViewService webViewService)
         {
             // Required. Loads the compiled page of a component from XAML.
-            InitializeComponent();
+            this.InitializeComponent();
 
-            // Map webView generated from XAML to LazyAdminWebView, which initializes component.
-            LazyAdminWebView.WebView = webView;
-            _webView = webView;
+            // Map vw generated from XAML to LazyAdminWebView, which initializes component.
+            // LazyAdminWebView.WebView = this.webView;
+            // SetWebView(this.webView);
+            this.webViewService = webViewService;
 
-            _webViewService = webViewService;
+            GetLazyAdminPwsh().MockPowerShell = this.PowerShell;
+        }
 
-            LazyAdminPwsh.MockPowerShell = PowerShell;
+        /// <summary>
+        /// Gets LazyAdminPowerShell object.
+        /// </summary>
+        /// <returns>LazyAdminPowerShell.</returns>
+        public static LazyAdminPowerShell GetLazyAdminPwsh()
+        {
+            return lazyAdminPwsh;
+        }
+
+        /// <summary>
+        /// Sets LazyAdminPowerShell object.
+        /// </summary>
+        public static void SetLazyAdminPwsh(LazyAdminPowerShell value)
+        {
+            lazyAdminPwsh = value;
+        }
+
+        /// <summary>
+        /// Displays Message.
+        /// </summary>
+        /// <param name="uid">Uid.</param>
+        /// <param name="status">Status.</param>
+        /// <param name="message">Message.</param>
+        public static void ShowMessageFromThread(Guid uid, string status, string message)
+        {
+            LazyAdminWebView.PostRunspaceStatus(uid, status, message);
+        }
+
+        /// <summary>
+        /// Displays Message.
+        /// </summary>
+        /// <param name="uid">Uid.</param>
+        /// <param name="status">Status.</param>
+        public static void ShowMessageFromThread(Guid uid, string status)
+        {
+            LazyAdminWebView.PostRunspaceStatus(uid, status);
         }
 
         protected override void OnContentRendered(EventArgs e)
@@ -62,7 +95,7 @@ namespace HoubyStudio.LazyAdmin.DesktopApp
             catch (Exception)
             {
                 // TODO: String to resource for translation
-                Shutdown("An error occurred when starting the browser. Browser window will close.", "Error Occurred");
+                this.Shutdown("An error occurred when starting the browser. Browser window will close.", "Error Occurred");
             }
         }
 
@@ -76,19 +109,9 @@ namespace HoubyStudio.LazyAdmin.DesktopApp
         private async void Execute_Click(object sender, RoutedEventArgs e)
         {
             // TODO: Are we able to load service using scope and service provider?
-            //using var scope = _services.CreateScope();
-            //var webViewService = scope.ServiceProvider.GetRequiredService<IWebViewService>();
-            var result = await _webViewService.ShowMessageAsync("PowerShell.Text");
-        }
-
-        public static void ShowMessageFromThread(Guid uid, string status, string message)
-        {
-            LazyAdminWebView.PostRunspaceStatus(uid, status, message);
-        }
-
-        public static void ShowMessageFromThread(Guid uid, string status)
-        {
-            LazyAdminWebView.PostRunspaceStatus(uid, status);
+            // using var scope = _services.CreateScope();
+            // var webViewService = scope.ServiceProvider.GetRequiredService<IWebViewService>();
+            _ = await this.webViewService.ShowMessageAsync("PowerShell.Text");
         }
     }
 }
