@@ -186,7 +186,7 @@ namespace HoubyStudio.LazyAdmin.DesktopApp
                 _ = System.Windows.Application.Current.Dispatcher.BeginInvoke(new Action(() =>
                 {
                     // LazyAdminWebView.ShowMessage("Results obtained");
-                    MainWindow.ShowMessageFromThread(Guid.NewGuid(), "Running");
+                    //MainWindow.ShowMessageFromThread(Guid.NewGuid(), "Running");
                 }));
                 // LazyAdminWebView.ShowMessage("Result mate");
                 // dispatcher.Invoke((Action)(() => MockPowerShell.Text = result + "`r`n"));
@@ -210,7 +210,7 @@ namespace HoubyStudio.LazyAdmin.DesktopApp
                 _ = System.Windows.Application.Current.Dispatcher.BeginInvoke(new Action(() =>
                 {
                     LazyAdminWebView.ShowMessage("Finished");
-                    MainWindow.ShowMessageFromThread(Guid.NewGuid(), "Completed");
+                    //MainWindow.ShowMessageFromThread(Guid.NewGuid(), "Completed");
                 }));
             }
         }

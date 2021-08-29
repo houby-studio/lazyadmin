@@ -54,7 +54,10 @@ namespace HoubyStudio.LazyAdmin.DesktopApp.WebView.Providers
             await Task.Run(() =>
             {
                 // TODO: Ensure WebView is present with all the settings.
-                result = webView.EnsureCoreWebView2Async().IsCompleted;
+                _ = System.Windows.Application.Current.Dispatcher.BeginInvoke(new Action(() =>
+                {
+                    result = webView.EnsureCoreWebView2Async().IsCompleted;
+                }));
             });
 
             return result;

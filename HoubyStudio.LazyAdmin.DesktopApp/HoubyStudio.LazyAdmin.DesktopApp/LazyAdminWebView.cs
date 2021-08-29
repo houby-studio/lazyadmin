@@ -109,7 +109,7 @@ namespace HoubyStudio.LazyAdmin.DesktopApp
             // await _webView.CoreWebView2.AddScriptToExecuteOnDocumentCreatedAsync("window.chrome.webview.addEventListener(\'message\', event => alert(event.data));");
 
             // Register event listener for PowerShell handler
-            _webView.CoreWebView2.WebMessageReceived += MainWindow.GetLazyAdminPwsh().ReceiveMessage;
+            //_webView.CoreWebView2.WebMessageReceived += MainWindow.GetLazyAdminPwsh().ReceiveMessage;
         }
     }
 }

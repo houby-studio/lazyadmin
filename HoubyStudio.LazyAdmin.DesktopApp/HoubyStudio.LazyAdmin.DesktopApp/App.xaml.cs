@@ -9,6 +9,7 @@ namespace HoubyStudio.LazyAdmin.DesktopApp
     using System.Configuration;
     using System.Data;
     using System.Linq;
+    using System.Threading;
     using System.Threading.Tasks;
     using System.Windows;
     using Microsoft.Extensions.Configuration;
@@ -62,7 +63,9 @@ namespace HoubyStudio.LazyAdmin.DesktopApp
         {
             using (this.host)
             {
-                await this.host.StopAsync();
+                var timeoutCts = new CancellationTokenSource(1000);
+
+                await this.host.RunAsync(timeoutCts.Token);
             }
 
             this.OnExit(e);

@@ -26,7 +26,7 @@ namespace HoubyStudio.LazyAdmin.DesktopApp
         // public static void SetWebView(WebView2 value) => webView1 = value;
         private readonly IWebViewService webViewService;
 
-        private static LazyAdminPowerShell lazyAdminPwsh = new();
+        //private static LazyAdminPowerShell lazyAdminPwsh = new();
 
         /// <summary>
         /// Initializes a new instance of the <see cref="MainWindow"/> class.
@@ -41,70 +41,71 @@ namespace HoubyStudio.LazyAdmin.DesktopApp
             // LazyAdminWebView.WebView = this.webView;
             // SetWebView(this.webView);
             this.webViewService = webViewService;
+            this.webViewService.EnsureCoreWebView2Async(this.webView);
 
-            GetLazyAdminPwsh().MockPowerShell = this.PowerShell;
+            //GetLazyAdminPwsh().MockPowerShell = this.PowerShell;
         }
 
-        /// <summary>
-        /// Gets LazyAdminPowerShell object.
-        /// </summary>
-        /// <returns>LazyAdminPowerShell.</returns>
-        public static LazyAdminPowerShell GetLazyAdminPwsh()
-        {
-            return lazyAdminPwsh;
-        }
+        ///// <summary>
+        ///// Gets LazyAdminPowerShell object.
+        ///// </summary>
+        ///// <returns>LazyAdminPowerShell.</returns>
+        //public static LazyAdminPowerShell GetLazyAdminPwsh()
+        //{
+        //    return lazyAdminPwsh;
+        //}
 
-        /// <summary>
-        /// Sets LazyAdminPowerShell object.
-        /// </summary>
-        public static void SetLazyAdminPwsh(LazyAdminPowerShell value)
-        {
-            lazyAdminPwsh = value;
-        }
+        ///// <summary>
+        ///// Sets LazyAdminPowerShell object.
+        ///// </summary>
+        //public static void SetLazyAdminPwsh(LazyAdminPowerShell value)
+        //{
+        //    lazyAdminPwsh = value;
+        //}
 
-        /// <summary>
-        /// Displays Message.
-        /// </summary>
-        /// <param name="uid">Uid.</param>
-        /// <param name="status">Status.</param>
-        /// <param name="message">Message.</param>
-        public static void ShowMessageFromThread(Guid uid, string status, string message)
-        {
-            LazyAdminWebView.PostRunspaceStatus(uid, status, message);
-        }
+        ///// <summary>
+        ///// Displays Message.
+        ///// </summary>
+        ///// <param name="uid">Uid.</param>
+        ///// <param name="status">Status.</param>
+        ///// <param name="message">Message.</param>
+        //public static void ShowMessageFromThread(Guid uid, string status, string message)
+        //{
+        //    LazyAdminWebView.PostRunspaceStatus(uid, status, message);
+        //}
 
-        /// <summary>
-        /// Displays Message.
-        /// </summary>
-        /// <param name="uid">Uid.</param>
-        /// <param name="status">Status.</param>
-        public static void ShowMessageFromThread(Guid uid, string status)
-        {
-            LazyAdminWebView.PostRunspaceStatus(uid, status);
-        }
+        ///// <summary>
+        ///// Displays Message.
+        ///// </summary>
+        ///// <param name="uid">Uid.</param>
+        ///// <param name="status">Status.</param>
+        //public static void ShowMessageFromThread(Guid uid, string status)
+        //{
+        //    LazyAdminWebView.PostRunspaceStatus(uid, status);
+        //}
 
-        protected override void OnContentRendered(EventArgs e)
-        {
-            base.OnContentRendered(e);
+        //protected override void OnContentRendered(EventArgs e)
+        //{
+        //    base.OnContentRendered(e);
 
-            try
-            {
-                // Let WebView to initialize itself
-                LazyAdminWebView.InitializeWebView();
-            }
-            catch (Exception)
-            {
-                // TODO: String to resource for translation
-                this.Shutdown("An error occurred when starting the browser. Browser window will close.", "Error Occurred");
-            }
-        }
+        //    try
+        //    {
+        //        // Let WebView to initialize itself
+        //        LazyAdminWebView.InitializeWebView();
+        //    }
+        //    catch (Exception)
+        //    {
+        //        // TODO: String to resource for translation
+        //        this.Shutdown("An error occurred when starting the browser. Browser window will close.", "Error Occurred");
+        //    }
+        //}
 
         // TODO: String to resource for translation
-        private void Shutdown(string message, string caption = "Information")
-        {
-            _ = MessageBox.Show(this, message, caption);
-            Application.Current.Shutdown();
-        }
+        //private void Shutdown(string message, string caption = "Information")
+        //{
+        //    _ = MessageBox.Show(this, message, caption);
+        //    Application.Current.Shutdown();
+        //}
 
         private async void Execute_Click(object sender, RoutedEventArgs e)
         {
