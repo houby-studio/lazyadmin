@@ -32,8 +32,8 @@ namespace HoubyStudio.LazyAdmin.DesktopApp
             this.host = Host.CreateDefaultBuilder()
                    .ConfigureServices((context, services) =>
                    {
-                       _ = services.AddScoped<Web.Providers.IWebViewCommunicationProvider, Web.Providers.WebViewCommunicationProvider>();
-                       _ = services.AddScoped<Web.Services.IWebViewService, Web.Services.WebViewService>();
+                       _ = services.AddScoped<WebView.Providers.IWebViewCommunicationProvider, WebView.Providers.WebViewCommunicationProvider>();
+                       _ = services.AddScoped<WebView.Services.IWebViewService, WebView.Services.WebViewService>();
                        _ = services.AddScoped<Pwsh.Services.IPwshService, Pwsh.Services.PwshService>();
                        _ = services.AddSingleton<MainWindow>();
                    })

@@ -2,15 +2,16 @@
 // Copyright (c) Houby Studio. All rights reserved.
 // </copyright>
 
-namespace HoubyStudio.LazyAdmin.DesktopApp.Web.Services
+namespace HoubyStudio.LazyAdmin.DesktopApp.WebView.Services
 {
     using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Text;
     using System.Threading.Tasks;
-    using HoubyStudio.LazyAdmin.DesktopApp.Web.Providers;
+    using HoubyStudio.LazyAdmin.DesktopApp.WebView.Providers;
     using Microsoft.Extensions.Logging;
+    using Microsoft.Web.WebView2.Wpf;
 
     /// <summary>
     /// WebView service.
@@ -34,9 +35,15 @@ namespace HoubyStudio.LazyAdmin.DesktopApp.Web.Services
         }
 
         /// <inheritdoc/>
-        public virtual async Task<string> ShowMessageAsync(string message)
+        public virtual async Task<string> ShowMessageAsync(string message, WebView2 webView)
         {
-            return await this.communicationProvider.ShowMessageAsync(message);
+            return await this.communicationProvider.ShowMessageAsync(message, webView);
+        }
+
+        /// <inheritdoc/>
+        public virtual async Task<bool> EnsureCoreWebView2Async(WebView2 webView)
+        {
+            return await this.communicationProvider.EnsureCoreWebView2Async(webView);
         }
     }
 }

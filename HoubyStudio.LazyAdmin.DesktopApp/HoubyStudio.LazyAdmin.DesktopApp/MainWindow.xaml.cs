@@ -7,7 +7,7 @@ namespace HoubyStudio.LazyAdmin.DesktopApp
     using System;
     using System.IO;
     using System.Windows;
-    using HoubyStudio.LazyAdmin.DesktopApp.Web.Services;
+    using HoubyStudio.LazyAdmin.DesktopApp.WebView.Services;
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Web.WebView2.Core;
     using Microsoft.Web.WebView2.Wpf;
@@ -111,7 +111,7 @@ namespace HoubyStudio.LazyAdmin.DesktopApp
             // TODO: Are we able to load service using scope and service provider?
             // using var scope = _services.CreateScope();
             // var webViewService = scope.ServiceProvider.GetRequiredService<IWebViewService>();
-            _ = await this.webViewService.ShowMessageAsync("PowerShell.Text");
+            _ = await this.webViewService.ShowMessageAsync("PowerShell.Text", this.webView);
         }
     }
 }

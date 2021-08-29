@@ -2,7 +2,7 @@
 // Copyright (c) Houby Studio. All rights reserved.
 // </copyright>
 
-namespace HoubyStudio.LazyAdmin.DesktopApp.Web.Providers
+namespace HoubyStudio.LazyAdmin.DesktopApp.WebView.Providers
 {
     using System;
     using System.Collections.Generic;
@@ -19,15 +19,16 @@ namespace HoubyStudio.LazyAdmin.DesktopApp.Web.Providers
         /// <summary>
         /// Displays string as an alert in the WebView control.
         /// </summary>
-        /// <param name="message">Message to be displayed WebView control.</param>
+        /// <param name="message">Message to be displayed in the WebView control.</param>
+        /// <param name="webView">Target WebView control.</param>
         /// <returns>A <see cref="Task{TResult}"/> representing the result of the asynchronous operation.</returns>
-        Task<string> ShowMessageAsync(string message);
+        public Task<string> ShowMessageAsync(string message, WebView2 webView);
 
         /// <summary>
-        /// Sets WebView control for current provider.
+        /// Initializes WebView2 control.
         /// </summary>
         /// <param name="webView">WebView2 control.</param>
-        /// /// <returns><Void>A <see cref="Task"/> representing the asynchronous operation.</returns>
-        Task EnsureCoreWebView2Async(WebView2 webView);
+        /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
+        public Task<bool> EnsureCoreWebView2Async(WebView2 webView);
     }
 }

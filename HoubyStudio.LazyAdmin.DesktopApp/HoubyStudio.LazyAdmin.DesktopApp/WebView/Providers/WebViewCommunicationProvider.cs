@@ -2,7 +2,7 @@
 // Copyright (c) Houby Studio. All rights reserved.
 // </copyright>
 
-namespace HoubyStudio.LazyAdmin.DesktopApp.Web.Providers
+namespace HoubyStudio.LazyAdmin.DesktopApp.WebView.Providers
 {
     using System;
     using System.Collections.Generic;
@@ -18,28 +18,26 @@ namespace HoubyStudio.LazyAdmin.DesktopApp.Web.Providers
     public class WebViewCommunicationProvider : IWebViewCommunicationProvider
     {
         private readonly ILogger<WebViewCommunicationProvider> logger;
-        private WebView2 webView;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="WebViewCommunicationProvider"/> class.
         /// </summary>
         /// <param name="logger">Represents a type used to perform logging.</param>
         /// <param name="webView">WebView control assigned to this provider..</param>
-        public WebViewCommunicationProvider(ILogger<WebViewCommunicationProvider> logger, WebView2 webView = null)
+        public WebViewCommunicationProvider(ILogger<WebViewCommunicationProvider> logger)
         {
             this.logger = logger;
-            this.webView = webView;
         }
 
         /// <inheritdoc/>
-        public virtual async Task<string> ShowMessageAsync(string message)
+        public virtual async Task<string> ShowMessageAsync(string message, WebView2 webView)
         {
             string result = null;
 
             try
             {
                 this.logger.LogDebug("Sending an alert message to the WebView control.");
-                result = await this.webView.CoreWebView2.ExecuteScriptAsync($"alert('{message}')");
+                result = await webView.CoreWebView2.ExecuteScriptAsync($"alert('{message}')");
             }
             catch
             {
@@ -50,12 +48,16 @@ namespace HoubyStudio.LazyAdmin.DesktopApp.Web.Providers
         }
 
         /// <inheritdoc/>
-        public virtual async Task EnsureCoreWebView2Async(WebView2 webView)
+        public virtual async Task<bool> EnsureCoreWebView2Async(WebView2 webView)
         {
-            this.webView = webView;
+            bool result = false;
+            await Task.Run(() =>
+            {
+                // TODO: Ensure WebView is present with all the settings.
+                result = webView.EnsureCoreWebView2Async().IsCompleted;
+            });
 
-            // TODO: Ensure WebView is present with all the settings.
-            await this.webView.EnsureCoreWebView2Async();
+            return result;
         }
     }
 }
