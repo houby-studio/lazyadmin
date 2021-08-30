@@ -41,9 +41,9 @@ namespace HoubyStudio.LazyAdmin.DesktopApp.WebView.Services
         }
 
         /// <inheritdoc/>
-        public virtual async Task<bool> EnsureCoreWebView2Async(WebView2 webView)
+        public virtual async Task<bool> InitializeWebView2Async(WebView2 webView)
         {
-            return await this.communicationProvider.EnsureCoreWebView2Async(webView);
+            return await this.communicationProvider.InitializeWebView2Async(webView);
         }
     }
 }

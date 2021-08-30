@@ -29,6 +29,6 @@ namespace HoubyStudio.LazyAdmin.DesktopApp.WebView.Providers
         /// </summary>
         /// <param name="webView">WebView2 control.</param>
         /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
-        public Task<bool> EnsureCoreWebView2Async(WebView2 webView);
+        public Task<bool> InitializeWebView2Async(WebView2 webView);
     }
 }

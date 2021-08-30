@@ -41,7 +41,7 @@ namespace HoubyStudio.LazyAdmin.DesktopApp
             // LazyAdminWebView.WebView = this.webView;
             // SetWebView(this.webView);
             this.webViewService = webViewService;
-            this.webViewService.EnsureCoreWebView2Async(this.webView);
+            this.webViewService.InitializeWebView2Async(this.webView);
 
             //GetLazyAdminPwsh().MockPowerShell = this.PowerShell;
         }
@@ -112,7 +112,7 @@ namespace HoubyStudio.LazyAdmin.DesktopApp
             // TODO: Are we able to load service using scope and service provider?
             // using var scope = _services.CreateScope();
             // var webViewService = scope.ServiceProvider.GetRequiredService<IWebViewService>();
-            _ = await this.webViewService.ShowMessageAsync("PowerShell.Text", this.webView);
+            _ = await this.webViewService.ShowMessageAsync(this.PowerShell.Text, this.webView);
         }
     }
 }

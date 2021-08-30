@@ -58,9 +58,9 @@ namespace HoubyStudio.LazyAdmin.DesktopApp
         /// <summary>
         /// Change Runspace status.
         /// </summary>
-        public static void PostRunspaceStatus(Guid Uid, string Status, string Result)
+        public static void PostRunspaceStatus(Guid uid, string status, string result)
         {
-            CSharpRunspaceStatusMessage jsonMessage = new(Uid, Status, Result);
+            CSharpRunspaceStatusMessage jsonMessage = new(uid, status, result);
 
             string jsonString = JsonConvert.SerializeObject(jsonMessage);
             _webView.CoreWebView2.PostWebMessageAsJson(jsonString);
@@ -82,10 +82,10 @@ namespace HoubyStudio.LazyAdmin.DesktopApp
         /// <summary>
         /// Posts WebMessage in the JSON form to the WebView2 control.
         /// </summary>
-        /// <param name="Message">JSON sent to the WebView2 control.</param>
-        public static void PostWebMessageAsJSON(string Message)
+        /// <param name="message">JSON sent to the WebView2 control.</param>
+        public static void PostWebMessageAsJSON(string message)
         {
-            PowerShellData jsonMessage = new(Message);
+            PowerShellData jsonMessage = new(message);
 
             string jsonString = JsonConvert.SerializeObject(jsonMessage);
             _webView.CoreWebView2.PostWebMessageAsJson(jsonString);

@@ -16,6 +16,6 @@ namespace HoubyStudio.LazyAdmin.DesktopApp.WebView.Services
         public Task<string> ShowMessageAsync(string message, WebView2 webView);
 
         /// <inheritdoc cref="HoubyStudio.LazyAdmin.DesktopApp.WebView.Providers.IWebViewCommunicationProvider.EnsureCoreWebView2Async(WebView2)"/>
-        public Task<bool> EnsureCoreWebView2Async(WebView2 webView);
+        public Task<bool> InitializeWebView2Async(WebView2 webView);
     }
 }

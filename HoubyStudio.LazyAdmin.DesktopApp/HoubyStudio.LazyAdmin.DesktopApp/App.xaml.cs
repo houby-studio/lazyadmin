@@ -63,7 +63,7 @@ namespace HoubyStudio.LazyAdmin.DesktopApp
         {
             using (this.host)
             {
-                var timeoutCts = new CancellationTokenSource(1000);
+                CancellationTokenSource timeoutCts = new CancellationTokenSource(1000);
 
                 await this.host.RunAsync(timeoutCts.Token);
             }
