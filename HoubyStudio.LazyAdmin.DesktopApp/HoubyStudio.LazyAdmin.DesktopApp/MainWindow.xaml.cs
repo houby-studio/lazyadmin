@@ -100,18 +100,27 @@ namespace HoubyStudio.LazyAdmin.DesktopApp
         //    }
         //}
 
-        // TODO: String to resource for translation
-        //private void Shutdown(string message, string caption = "Information")
-        //{
-        //    _ = MessageBox.Show(this, message, caption);
-        //    Application.Current.Shutdown();
-        //}
+        /// <summary>
+        /// Show terminating error message and shuts down application.
+        /// </summary>
+        /// <param name="message">Error message to be displayed in the message box.</param>
+        public static void Shutdown(string message)
+        {
+            _ = MessageBox.Show(
+                        messageBoxText: $"Lazy Admin crashed. Oops. Sorry for inconvenience.{Environment.NewLine}Error message:{Environment.NewLine}{message}",
+                        caption: "Lazy Admin encountered critical error!",
+                        button: MessageBoxButton.OK,
+                        icon: MessageBoxImage.Error);
+            Application.Current.Shutdown();
+        }
 
+        /// <summary>
+        /// Method executed on button click.
+        /// </summary>
+        /// <param name="sender">Parameter 'sender' not used.</param>
+        /// <param name="e">Parameter 'e' not used.</param>
         private async void Execute_Click(object sender, RoutedEventArgs e)
         {
-            // TODO: Are we able to load service using scope and service provider?
-            // using var scope = _services.CreateScope();
-            // var webViewService = scope.ServiceProvider.GetRequiredService<IWebViewService>();
             _ = await this.webViewService.ShowMessageAsync(this.PowerShell.Text, this.webView);
         }
     }

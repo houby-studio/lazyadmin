@@ -12,6 +12,7 @@ namespace HoubyStudio.LazyAdmin.DesktopApp.WebView.Services
     using HoubyStudio.LazyAdmin.DesktopApp.WebView.Providers;
     using Microsoft.Extensions.Logging;
     using Microsoft.Web.WebView2.Wpf;
+    using Newtonsoft.Json;
 
     /// <summary>
     /// WebView service.
@@ -38,6 +39,13 @@ namespace HoubyStudio.LazyAdmin.DesktopApp.WebView.Services
         public virtual async Task<string> ShowMessageAsync(string message, WebView2 webView)
         {
             return await this.communicationProvider.ShowMessageAsync(message, webView);
+        }
+
+        /// <inheritdoc/>
+        public virtual async Task<bool> SendWebMessageAsJson(string message, WebView2 webView)
+        {
+            string jsonString = JsonConvert.SerializeObject(message);
+            return await this.communicationProvider.SendWebMessageAsJson(jsonString, webView);
         }
 
         /// <inheritdoc/>

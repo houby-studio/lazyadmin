@@ -46,18 +46,56 @@ namespace HoubyStudio.LazyAdmin.DesktopApp.WebView.Providers
         /// <inheritdoc/>
         public virtual async Task<string> ShowMessageAsync(string message, WebView2 webView)
         {
-            string result = null;
+            string result;
 
             try
             {
                 this.logger.LogDebug("Sending an alert message to the WebView control.");
                 result = await webView.CoreWebView2.ExecuteScriptAsync($"alert('{message}')");
+                this.logger.LogDebug("Succesfully sent an alert message to the WebView control with result: {Result}.", result);
             }
-            catch
+            catch (ObjectDisposedException exception)
             {
-                this.logger.LogDebug("Succesfully executed script in the WebView control.");
+                this.logger.LogError(exception, "Failed to send alert message to WebView2 component, because component is already disposed. Retrying initialization...");
+                MainWindow.Shutdown(exception.Message);
+                throw;
+            }
+            catch (InvalidOperationException exception)
+            {
+                this.logger.LogError(exception, "Failed to send alert message to WebView2 component with unexpected error.");
+
+                // TODO: Is this terminating error?
+                // MainWindow.Shutdown(exception.Message);
+                throw;
+            }
+            catch (Exception exception)
+            {
+                this.logger.LogError(exception, "Failed to send alert message to the WebView2 component with unexpected error.");
+
+                // TODO: Is this terminating error?
+                // MainWindow.Shutdown(exception.Message);
+                throw;
             }
 
+            return result;
+        }
+
+        /// <inheritdoc/>
+        public virtual async Task<bool> SendWebMessageAsJson(string message, WebView2 webView)
+        {
+            bool result = false;
+            await Task.Run(() =>
+            {
+                // TODO: Validate if string is valid JSON? Or should we rely on C# typing?
+                try
+                {
+                    webView.CoreWebView2.PostWebMessageAsJson(message);
+                }
+                catch (Exception exception)
+                {
+                    this.logger.LogError(exception, "Failed to post message as JSON to the WebView2 component with unexpected error.");
+                }
+            });
             return result;
         }
 
@@ -72,22 +110,14 @@ namespace HoubyStudio.LazyAdmin.DesktopApp.WebView.Providers
             catch (Exception exception)
             {
                 this.logger.LogError(exception, "Failed to register all required event handlers for WebView 2 component. Application cannot continue.");
-                Application.Current.Dispatcher.Invoke(() =>
-                {
-                    MessageBoxResult result = MessageBox.Show(
-                        "We have encountered an error, which makes Lazy Admin unusable. Read logs for more details.",
-                        "Lazy Admin: Terminating error occurred!",
-                        MessageBoxButton.OK,
-                        MessageBoxImage.Error);
-                });
-                Application.Current.Shutdown();
+                MainWindow.Shutdown(exception.Message);
                 throw;
             }
 
             bool result = false;
             await Task.Run(() =>
             {
-                _ = System.Windows.Application.Current.Dispatcher.BeginInvoke(new Action(async () =>
+                _ = Application.Current.Dispatcher.BeginInvoke(new Action(async () =>
                 {
                     CoreWebView2Environment coreWebView2Environment;
 
@@ -116,6 +146,7 @@ namespace HoubyStudio.LazyAdmin.DesktopApp.WebView.Providers
                     // Set WebView2 component's source to Lazy Admin's UI index.html file
                     try
                     {
+                        // TODO: Handle if file does not exist, try to download it or throw and quit.
                         webView.Source = new UriBuilder(IndexFilePath).Uri;
                     }
                     catch (Exception exception)
@@ -129,6 +160,20 @@ namespace HoubyStudio.LazyAdmin.DesktopApp.WebView.Providers
             return result;
         }
 
+        /// <summary>
+        /// Checks if WebView2 component initialized without errors. More information may be found on <see href="https://docs.microsoft.com/en-us/dotnet/api/microsoft.web.webview2.core.corewebview2initializationcompletedeventargs">Microsoft Edge documentation</see>.
+        /// <list type="table">
+        /// <listheader>
+        ///     <description>Possible errors</description>
+        /// </listheader>
+        /// <item>
+        ///     <term>Failed to create user data folder</term>
+        ///     <description>Process may lack permissions to create or modify user data folder for WebView2 control.</description>
+        /// </item>
+        /// </list>
+        /// </summary>
+        /// <param name="sender">Parameter 'sender' not used.</param>
+        /// <param name="args">Paramter 'args' contains bool value with success status and potential exception object.</param>
         private void CheckWebViewInitializationStatus(object sender, CoreWebView2InitializationCompletedEventArgs args)
         {
             if (args.IsSuccess)
@@ -138,6 +183,8 @@ namespace HoubyStudio.LazyAdmin.DesktopApp.WebView.Providers
             else
             {
                 this.logger.LogError(args.InitializationException, "Failed to initialize Lazy Admin's WebView2 component.");
+                MainWindow.Shutdown(args.InitializationException.Message);
+                throw args.InitializationException;
             }
         }
     }

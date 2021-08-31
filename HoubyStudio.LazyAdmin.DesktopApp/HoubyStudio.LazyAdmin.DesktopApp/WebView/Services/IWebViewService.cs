@@ -12,10 +12,13 @@ namespace HoubyStudio.LazyAdmin.DesktopApp.WebView.Services
     /// </summary>
     public interface IWebViewService
     {
-        /// <inheritdoc cref="HoubyStudio.LazyAdmin.DesktopApp.WebView.Providers.IWebViewCommunicationProvider.ShowMessageAsync(string)"/>
+        /// <inheritdoc cref="Providers.IWebViewCommunicationProvider.ShowMessageAsync(string)"/>
         public Task<string> ShowMessageAsync(string message, WebView2 webView);
 
-        /// <inheritdoc cref="HoubyStudio.LazyAdmin.DesktopApp.WebView.Providers.IWebViewCommunicationProvider.EnsureCoreWebView2Async(WebView2)"/>
+        /// <inheritdoc cref="Providers.IWebViewCommunicationProvider.SendWebMessageAsJson(string, WebView2)"/>
+        public Task<bool> SendWebMessageAsJson(string message, WebView2 webView);
+
+        /// <inheritdoc cref="Providers.IWebViewCommunicationProvider.EnsureCoreWebView2Async(WebView2)"/>
         public Task<bool> InitializeWebView2Async(WebView2 webView);
     }
 }
