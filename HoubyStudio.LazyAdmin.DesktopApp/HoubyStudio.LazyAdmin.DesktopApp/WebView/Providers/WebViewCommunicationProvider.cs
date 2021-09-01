@@ -8,6 +8,7 @@ namespace HoubyStudio.LazyAdmin.DesktopApp.WebView.Providers
     using System.IO;
     using System.Threading.Tasks;
     using System.Windows;
+    using HoubyStudio.LazyAdmin.DesktopApp.Pwsh.Services;
     using Microsoft.Extensions.Logging;
     using Microsoft.Web.WebView2.Core;
     using Microsoft.Web.WebView2.Wpf;
@@ -36,8 +37,8 @@ namespace HoubyStudio.LazyAdmin.DesktopApp.WebView.Providers
         /// <summary>
         /// Initializes a new instance of the <see cref="WebViewCommunicationProvider"/> class.
         /// </summary>
-        /// <param name="logger">Represents a type used to perform logging.</param>
-        /// <param name="webView">WebView control assigned to this provider..</param>
+        /// <param name="logger">Dependent logger interface.</param>
+        /// <param name="pwshService">Dependent pwsh service interface.</param>
         public WebViewCommunicationProvider(ILogger<WebViewCommunicationProvider> logger)
         {
             this.logger = logger;
@@ -100,12 +101,14 @@ namespace HoubyStudio.LazyAdmin.DesktopApp.WebView.Providers
         }
 
         /// <inheritdoc/>
-        public virtual async Task<bool> InitializeWebView2Async(WebView2 webView)
+        public virtual async Task<bool> InitializeWebView2Async(WebView2 webView, IPwshService pwshService)
         {
             // Register event handlers to WebView2 component
             try
             {
                 webView.CoreWebView2InitializationCompleted += this.CheckWebViewInitializationStatus;
+                //webView.CoreWebView2.WebMessageReceived += pwshService.ReceiveMessageFromWebView;
+
             }
             catch (Exception exception)
             {

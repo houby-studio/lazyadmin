@@ -7,6 +7,7 @@ namespace HoubyStudio.LazyAdmin.DesktopApp
     using System;
     using System.IO;
     using System.Windows;
+    using HoubyStudio.LazyAdmin.DesktopApp.Pwsh.Services;
     using HoubyStudio.LazyAdmin.DesktopApp.WebView.Services;
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Web.WebView2.Core;
@@ -25,14 +26,16 @@ namespace HoubyStudio.LazyAdmin.DesktopApp
         // public static WebView2 WebView => webView1;
         // public static void SetWebView(WebView2 value) => webView1 = value;
         private readonly IWebViewService webViewService;
+        private readonly IPwshService pwshService;
 
         //private static LazyAdminPowerShell lazyAdminPwsh = new();
 
         /// <summary>
         /// Initializes a new instance of the <see cref="MainWindow"/> class.
         /// </summary>
-        /// <param name="webViewService">To be removed.</param>
-        public MainWindow(IWebViewService webViewService)
+        /// <param name="webViewService">WebView service.</param>
+        /// <param name="pwshService">Pwsh service.</param>
+        public MainWindow(IWebViewService webViewService, IPwshService pwshService)
         {
             // Required. Loads the compiled page of a component from XAML.
             this.InitializeComponent();
@@ -41,7 +44,11 @@ namespace HoubyStudio.LazyAdmin.DesktopApp
             // LazyAdminWebView.WebView = this.webView;
             // SetWebView(this.webView);
             this.webViewService = webViewService;
-            this.webViewService.InitializeWebView2Async(this.webView);
+            this.pwshService = pwshService;
+            this.webViewService.InitializeWebView2Async(this.webView, this.pwshService);
+            // TODO: https://codewithshadman.com/mediator-pattern-csharp/
+            this.webView.CoreWebView2.WebMessageReceived += this.pwshService.ReceiveMessageFromWebView;
+
 
             //GetLazyAdminPwsh().MockPowerShell = this.PowerShell;
         }

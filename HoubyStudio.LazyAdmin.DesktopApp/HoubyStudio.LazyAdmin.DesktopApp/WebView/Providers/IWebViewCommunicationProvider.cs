@@ -5,6 +5,7 @@
 namespace HoubyStudio.LazyAdmin.DesktopApp.WebView.Providers
 {
     using System.Threading.Tasks;
+    using HoubyStudio.LazyAdmin.DesktopApp.Pwsh.Services;
     using Microsoft.Web.WebView2.Wpf;
 
     /// <summary>
@@ -33,6 +34,6 @@ namespace HoubyStudio.LazyAdmin.DesktopApp.WebView.Providers
         /// </summary>
         /// <param name="webView">WebView2 control.</param>
         /// <returns>A <see cref="Task{TResult}"/> representing the asynchronous operation.</returns>
-        public Task<bool> InitializeWebView2Async(WebView2 webView);
+        public Task<bool> InitializeWebView2Async(WebView2 webView, IPwshService pwshService);
     }
 }

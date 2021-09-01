@@ -9,13 +9,14 @@ namespace HoubyStudio.LazyAdmin.DesktopApp.WebView.Services
     using System.Linq;
     using System.Text;
     using System.Threading.Tasks;
+    using HoubyStudio.LazyAdmin.DesktopApp.Pwsh.Services;
     using HoubyStudio.LazyAdmin.DesktopApp.WebView.Providers;
     using Microsoft.Extensions.Logging;
     using Microsoft.Web.WebView2.Wpf;
     using Newtonsoft.Json;
 
     /// <summary>
-    /// WebView service.
+    /// WebView service initializes and manages WebView2 component, exposes method to send data to WebView2 component and registers events to trigger methods in other services.
     /// </summary>
     public class WebViewService : IWebViewService
     {
@@ -32,26 +33,26 @@ namespace HoubyStudio.LazyAdmin.DesktopApp.WebView.Services
             this.logger = logger;
             this.communicationProvider = communicationProvider;
 
-            this.logger.LogInformation("Created new WebViewService");
+            this.logger.LogDebug("Created new WebViewService");
         }
 
         /// <inheritdoc/>
-        public virtual async Task<string> ShowMessageAsync(string message, WebView2 webView)
+        public async Task<string> ShowMessageAsync(string message, WebView2 webView)
         {
             return await this.communicationProvider.ShowMessageAsync(message, webView);
         }
 
         /// <inheritdoc/>
-        public virtual async Task<bool> SendWebMessageAsJson(string message, WebView2 webView)
+        public async Task<bool> SendWebMessageAsJson(string message, WebView2 webView)
         {
             string jsonString = JsonConvert.SerializeObject(message);
             return await this.communicationProvider.SendWebMessageAsJson(jsonString, webView);
         }
 
         /// <inheritdoc/>
-        public virtual async Task<bool> InitializeWebView2Async(WebView2 webView)
+        public async Task<bool> InitializeWebView2Async(WebView2 webView, IPwshService pwshService)
         {
-            return await this.communicationProvider.InitializeWebView2Async(webView);
+            return await this.communicationProvider.InitializeWebView2Async(webView, pwshService);
         }
     }
 }

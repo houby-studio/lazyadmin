@@ -5,6 +5,7 @@
 namespace HoubyStudio.LazyAdmin.DesktopApp.WebView.Services
 {
     using System.Threading.Tasks;
+    using HoubyStudio.LazyAdmin.DesktopApp.Pwsh.Services;
     using Microsoft.Web.WebView2.Wpf;
 
     /// <summary>
@@ -18,7 +19,7 @@ namespace HoubyStudio.LazyAdmin.DesktopApp.WebView.Services
         /// <inheritdoc cref="Providers.IWebViewCommunicationProvider.SendWebMessageAsJson(string, WebView2)"/>
         public Task<bool> SendWebMessageAsJson(string message, WebView2 webView);
 
-        /// <inheritdoc cref="Providers.IWebViewCommunicationProvider.EnsureCoreWebView2Async(WebView2)"/>
-        public Task<bool> InitializeWebView2Async(WebView2 webView);
+        /// <inheritdoc cref="Providers.IWebViewCommunicationProvider.EnsureCoreWebView2Async(WebView2, IPwshService)"/>
+        public Task<bool> InitializeWebView2Async(WebView2 webView, IPwshService pwshService);
     }
 }

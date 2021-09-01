@@ -35,6 +35,7 @@ namespace HoubyStudio.LazyAdmin.DesktopApp
                    {
                        _ = services.AddScoped<WebView.Providers.IWebViewCommunicationProvider, WebView.Providers.WebViewCommunicationProvider>();
                        _ = services.AddScoped<WebView.Services.IWebViewService, WebView.Services.WebViewService>();
+                       _ = services.AddScoped<Pwsh.Providers.IPwshProvider, Pwsh.Providers.PwshProvider>();
                        _ = services.AddScoped<Pwsh.Services.IPwshService, Pwsh.Services.PwshService>();
                        _ = services.AddSingleton<MainWindow>();
                    })
